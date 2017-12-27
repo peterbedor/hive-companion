@@ -1,13 +1,8 @@
 <template>
 	<div id="app">
-		<div class="window">
-			<header class="toolbar toolbar-header">
-				<h1 class="title">{{ currentPage }}</h1>
-			</header>
-			<navigation />
-			<div class="window-content">
-				<router-view></router-view>
-			</div>
+		<navigation />
+		<div class="ui padded container">
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
@@ -31,11 +26,8 @@ export default {
 </script>
 
 <style>
-.icon-link {
-	cursor: pointer;
-}
-.page {
-	width: 100%;
-	height: 100%;
+body {
+	background-color: #fff;
+	margin-top: 60px;
 }
 </style>

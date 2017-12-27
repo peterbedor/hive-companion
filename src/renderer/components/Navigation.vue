@@ -1,12 +1,11 @@
 <template>
-	<div class="tab-group">
-		<router-link 
-			class="tab-item"
-			tag="div"
-			v-for="{ url, path, name } in routes" 
-			:key="url"
+	<div class="ui menu fixed">
+		<router-link
+			class="item"
+			:key="url" 
 			:to="path"
-			:exact="path === '/'"
+			v-for="{ url, path, name } in routes"
+			exact
 		>
 			{{ name }}
 		</router-link>
@@ -34,4 +33,3 @@ export default {
 	})
 }
 </script>
-

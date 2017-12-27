@@ -1,14 +1,15 @@
 import Vue from 'vue';
+import { sync } from 'vuex-router-sync';
 
 import App from './App';
 import router from './router';
 import store from './store';
 
-import '../renderer/assets/css/photon.min';
-
 if (! process.env.IS_WEB) {
 	Vue.use(require('vue-electron'));
 }
+
+const unsync = sync(store, router);
 
 Vue.config.productionTip = false;
 
@@ -18,4 +19,4 @@ new Vue({
 	router,
 	store,
 	template: '<App/>'
-}).$mount('#app')
+}).$mount('#app');

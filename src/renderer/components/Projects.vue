@@ -1,7 +1,7 @@
 <template>
-	<ul class="list-group">
+	<div class="ui styled accordion">
 		<project v-for="project in projects" :key="project.name" :project="project" />
-	</ul>
+	</div>
 </template>
 
 <script>

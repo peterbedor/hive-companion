@@ -2,7 +2,8 @@ import settings from 'electron-settings';
 import { 
 	SET_CONFIG_PATH, 
 	OPEN_PROJECT_SETTINGS,
-	CLOSE_PROJECT_SETTINGS
+	CLOSE_PROJECT_SETTINGS,
+	SET_LOCAL_PATH
 } from './types';
 
 // TODO: Remove
@@ -19,5 +20,8 @@ export default {
 	},
 	closeProjectSettings({ commit }, payload) {
 		commit(CLOSE_PROJECT_SETTINGS, payload);
+	},
+	setLocalPath({ commit }, payload) {
+		commit(SET_LOCAL_PATH, payload)
 	}
 }
