@@ -1,9 +1,8 @@
-import buildConfig from '../../../utilities/build-config';
+import settings from 'electron-settings';
 
-let { path, settings, projects } = buildConfig();
+let path = settings.get('config.path');
 
 export default {
-	path,
-	settings,
-	projects
+	loaded: path !== undefined,
+	path
 }

@@ -12,8 +12,8 @@ const settings = {
 	syncRoot: '',
 	webroot: 'public_html',
 	databases: {
-		mysql: false,         
-		postgresql: false,         
+		mysql: false,
+		postgresql: false,
 		redis: false
 	}
 }
@@ -30,7 +30,7 @@ const projects = {
 	php: '7.1'
 }
 
-export {
+export default {
 	settings,
 	projects
 }

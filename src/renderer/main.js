@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import { sync } from 'vuex-router-sync';
 
+import 'semantic-ui-css/semantic.min.css';
+
 import App from './App';
 import router from './router';
 import store from './store';

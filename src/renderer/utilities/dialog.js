@@ -1,15 +1,24 @@
 import { remote } from 'electron';
 
-const openDialog = (opts) => {
-	return new Promise((res, rej) => {
+const open = (opts) => {
+	return new Promise((resolve, reject) => {
 		let result = remote.dialog.showOpenDialog(opts);
 
 		if (result && result.length) {
-			return res(result[0]);
+			return resolve(result[0]);
 		}
 
-		return rej('No directory selected');
+		return reject('No file/directory selected');
 	});
 }
 
-export default openDialog;
+export default {
+	file(opts = {}) {
+		let options = {
+			properties: ['openFile'],
+			...opts
+		};
+
+		return open(options);
+	}
+}

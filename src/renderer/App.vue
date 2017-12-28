@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<navigation />
+		<navigation v-if="! isIntro" />
 		<div class="ui padded container">
 			<router-view></router-view>
 		</div>
@@ -8,26 +8,27 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Navigation from './components/Navigation';
+
 export default {
 	name: 'hive-companion',
 	components: { Navigation },
 
+	mounted() {
+		if (! this.configLoaded) {
+			this.$router.push({ name: 'intro' });
+		}
+	},
+
 	computed: {
-		currentPage() {
-			if (this.$route.meta && this.$route.meta.name) {
-				return this.$route.meta.name;
-			}
-			
-			return 'Hive Companion';
+		...mapGetters({
+			configLoaded: 'config/loaded'
+		}),
+
+		isIntro() {
+			return this.$route.name === 'intro';
 		}
 	}
 };
 </script>
-
-<style>
-body {
-	background-color: #fff;
-	margin-top: 60px;
-}
-</style>

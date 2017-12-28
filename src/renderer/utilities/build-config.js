@@ -1,6 +1,8 @@
 import electronSettings from 'electron-settings';
 import fs from 'fs-extra';
-import { settings, projects } from './defaults';
+import defaults from './defaults';
+
+let { settings, projects } = defaults;
 
 const mapProject = (project) => {
 	let projObj = {
@@ -12,7 +14,7 @@ const mapProject = (project) => {
 	if (! projObj.hivePath) {
 		projObj.hivePath = `/home/hive/projects/${projObj.name}`;
 	}
-	
+
 	return projObj;
 };
 
@@ -28,8 +30,9 @@ const buildConfig = () => {
 
 	delete configFile.projects;
 
+
 	return {
-		settings: { ...settings, ...configFile },
+		settings: { ...settings, ...configFile, _local: { activeSettings: [] } },
 		projects: userProjects.map(mapProject),
 		path
 	};

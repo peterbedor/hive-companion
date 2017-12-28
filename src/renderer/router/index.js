@@ -9,7 +9,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'projects',
-			component: require('@/components/Projects').default,
+			component: require('@/pages/Projects').default,
 			meta: {
 				name: 'Projects'
 			}
@@ -25,7 +25,10 @@ export default new Router({
 		{
 			path: '/intro',
 			name: 'intro',
-			component: require('@/pages/Intro').default
+			component: require('@/pages/Intro').default,
+			meta: {
+				name: 'Intro'
+			}
 		},
 		{
 			path: '*',

@@ -1,27 +1,25 @@
 import settings from 'electron-settings';
+import fs from 'fs-extra';
+import path from 'path';
 import { 
-	SET_CONFIG_PATH, 
-	OPEN_PROJECT_SETTINGS,
-	CLOSE_PROJECT_SETTINGS,
-	SET_LOCAL_PATH
+	SET_CONFIGURATION_LOADED_STATE, 
+	SET_CONFIGURATION_PATH 
 } from './types';
 
 // TODO: Remove
 window._settings = settings;
 
 export default {
-	setConfigPath({ commit }, payload) {
-		commit(SET_CONFIG_PATH, payload);
-		
+	setConfigurationLoadedState({ commit }, payload) {
+		commit(SET_CONFIGURATION_LOADED_STATE, payload);
+	},
+
+	setConfigurationPath({ commit }, payload) {
+		commit(SET_CONFIGURATION_PATH, payload);
+	
 		settings.set('config.path', payload);
-	},
-	openProjectSettings({ commit }, payload) {
-		commit(OPEN_PROJECT_SETTINGS, payload);
-	},
-	closeProjectSettings({ commit }, payload) {
-		commit(CLOSE_PROJECT_SETTINGS, payload);
-	},
-	setLocalPath({ commit }, payload) {
-		commit(SET_LOCAL_PATH, payload)
+		
+		// Make a back up copy of the current configuration
+		fs.copySync(payload, path.join(payload, `../config.${+new Date()}.json.bak`));
 	}
 }

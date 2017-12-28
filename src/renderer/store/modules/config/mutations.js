@@ -1,30 +1,14 @@
 import { 
-	SET_CONFIG_PATH, 
-	OPEN_PROJECT_SETTINGS,
-	CLOSE_PROJECT_SETTINGS,
-	SET_LOCAL_PATH
+	SET_CONFIGURATION_LOADED_STATE,
+	SET_CONFIGURATION_PATH
 } from './types';
 
 export default {
-	[SET_CONFIG_PATH] (state, path) {
-		state = { ...state, path };
+	[SET_CONFIGURATION_LOADED_STATE](state, loaded) {
+		state.loaded = loaded;
 	},
-	[OPEN_PROJECT_SETTINGS] (state, project) {
-		const index = state.projects.indexOf(project);
-		let newState = { ...state };
 
-		newState.projects[index]._local.open = true;
+	[SET_CONFIGURATION_PATH](state, path) {
+		state.path = path;
 	},
-	[CLOSE_PROJECT_SETTINGS] (state, project) {
-		const index = state.projects.indexOf(project);
-		let newState = { ...state };
-
-		newState.projects[index]._local.open = false;
-	},
-	[SET_LOCAL_PATH] (state, { project, path }) {
-		const index = state.projects.indexOf(project);
-		let newState = { ...state };
-		
-		newState.projects[index].localPath = path;
-	} 
 }
