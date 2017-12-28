@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<navigation v-if="! isIntro" />
-		<div class="ui padded container">
+		<div class="ui padded container main">
 			<router-view></router-view>
 		</div>
 	</div>
@@ -32,3 +32,9 @@ export default {
 	}
 };
 </script>
+
+<style>
+.main {
+	margin-bottom: 20px;
+}
+</style>
