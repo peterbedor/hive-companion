@@ -9,6 +9,7 @@
 
 <script>
 export default {
+	name: 'radio',
 	props: {
 		label: {
 			type: String,

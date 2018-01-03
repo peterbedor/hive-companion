@@ -7,6 +7,10 @@
 		<router-link to="/settings" class="item">
 			Settings
 		</router-link>
+
+		<router-link to="/commands" class="item">
+			Commands
+		</router-link>
 	</div>
 </template>
 

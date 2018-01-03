@@ -1,7 +1,8 @@
-import { 
-	app, 
-	BrowserWindow, 
-	Tray 
+import {
+	app,
+	BrowserWindow,
+	Tray,
+	nativeImage
 } from 'electron';
 import Positioner from 'electron-positioner';
 import extend from 'extend';
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 const winURL = process.env.NODE_ENV === 'development'
 	? `http://localhost:9080`
-	: `file://${__dirname}/index.html`
+	: `file://${__dirname}/index.html`;
 
 let opts = {
 	width: 400,
@@ -26,6 +27,7 @@ let opts = {
 	tooltip: '',
 	dir: app.getAppPath(),
 	index: winURL,
+	skipTaskbar: true,
 	windowPosition: (process.platform === 'win32') ? 'trayBottomCenter' : 'trayCenter'
 };
 
@@ -38,7 +40,7 @@ menubar.getOption = (opt)  => opts[opt];
 
 const appReady = () => {
 	let iconPath = path.join(__dirname + '/../renderer/assets/', 'icon.png');
-	var defaultClickEvent = 'click';
+	let defaultClickEvent = 'click';
 	let cachedBounds;
 
 	let supportsTrayHighlightState = false;
@@ -52,6 +54,7 @@ const appReady = () => {
 		if (supportsTrayHighlightState) {
 			menubar.tray.setHighlightMode('always');
 		}
+
 		if (! menubar.window) {
 			createWindow();
 		}
@@ -83,9 +86,7 @@ const appReady = () => {
 		menubar.window.setPosition(x, y);
 		menubar.window.show();
 		menubar.emit('after-show');
-		
-		return;
-	}
+	};
 
 	const hideWindow = () => {
 		if (supportsTrayHighlightState) {
@@ -99,16 +100,16 @@ const appReady = () => {
 		menubar.emit('hide');
 		menubar.window.hide();
 		menubar.emit('after-hide');
-	}
+	};
 
 	const windowClear = () => {
 		delete menubar.window;
 		menubar.emit('after-close');
-	}
+	};
 
 	const emitBlur = () => {
 		menubar.emit('focus-lost');
-	}
+	};
 
 	const createWindow = () => {
 		menubar.emit('create-window');
@@ -118,21 +119,18 @@ const appReady = () => {
 			frame: false,
 			resizable: false
 		};
-		
+
 		let winOpts = extend(defaults, opts);
 		menubar.window = new BrowserWindow(winOpts);
 		menubar.positioner = new Positioner(menubar.window);
 
 		// menubar.window.on('blur', () => opts.alwaysOnTop ? emitBlur() : hideWindow());
 
-		if (opts.showOnAllWorkspaces !== false) {
-			menubar.window.setVisibleOnAllWorkspaces(true);
-		}
-
 		menubar.window.on('close', windowClear);
 		menubar.window.loadURL(opts.index);
 		menubar.emit('after-create-window');
-	}
+		menubar.window.webContents.openDevTools();
+	};
 
 	const clicked = (e, bounds) => {
 		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
@@ -144,11 +142,12 @@ const appReady = () => {
 		}
 
 		cachedBounds = bounds || cachedBounds
-		
-		showWindow(cachedBounds);
-	}
 
-	menubar.tray = new Tray(iconPath);
+		showWindow(cachedBounds);
+	};
+
+	let iconImage = nativeImage.createFromPath(iconPath);
+	menubar.tray = new Tray(iconImage);
 	menubar.tray.on(defaultClickEvent, clicked);
 	menubar.tray.on('double-click', clicked);
 	menubar.tray.setToolTip(opts.tooltip);
@@ -156,66 +155,26 @@ const appReady = () => {
 	menubar.showWindow = showWindow;
 	menubar.hideWindow = hideWindow;
 	menubar.emit('ready');
-}
+
+	// Set environment for development
+	process.env.NODE_ENV = 'development'
+
+	// Install `electron-debug` with `devtron`
+	require('electron-debug')({ showDevTools: true })
+
+	// Install `vue-devtools`
+	require('electron').app.on('ready', () => {
+		let installExtension = require('electron-devtools-installer')
+		installExtension.default(installExtension.VUEJS_DEVTOOLS)
+			.then(() => {})
+			.catch(err => {
+				console.log('Unable to install `vue-devtools`: \n', err)
+			})
+	})
+};
 
 if (app.isReady()) {
 	appReady();
 } else {
 	app.on('ready', appReady);
 }
-
-// let mainWindow
-// const winURL = process.env.NODE_ENV === 'development'
-// 	? `http://localhost:9080`
-// 	: `file://${__dirname}/index.html`
-
-// function createWindow () {
-// 	/**
-// 	 * Initial window options
-// 	 */
-// 	mainWindow = new BrowserWindow({
-// 		height: 563,
-// 		useContentSize: true,
-// 		width: 1000
-// 	})
-
-// 	mainWindow.loadURL(winURL)
-
-// 	mainWindow.on('closed', () => {
-// 		mainWindow = null
-// 	})
-// }
-
-// app.on('ready', createWindow)
-
-// app.on('window-all-closed', () => {
-// 	if (process.platform !== 'darwin') {
-// 		app.quit()
-// 	}
-// })
-
-// app.on('activate', () => {
-// 	if (mainWindow === null) {
-// 		createWindow()
-// 	}
-// })
-
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-	autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-	if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */

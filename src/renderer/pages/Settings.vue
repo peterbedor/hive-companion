@@ -68,28 +68,11 @@
 			
 			<div class="field">
 				<label>Default PHP Version</label>
-				<!-- <input type="text" :placeholder="settings.php" @input="updatePHPVersion($event.target.value)" :value="settings.php"> -->
-				<!-- <select class="ui search dropdown">
-					<option value="7.1">7.1</option>
-					<option value="5.6">5.6</option>
-					<option value="5.5">5.5</option>
-				</select> -->
-
-				<div class="ui selection dropdown active visible">
-					<input type="hidden" name="gender">
-					<i class="dropdown icon"></i>
-					<div class="default text">Gender</div>
-					<div class="menu visible" style="display: block !important">
-						<div class="item" data-value="male" data-text="Male">
-							<i class="male icon"></i>
-							Male
-						</div>
-						<div class="item" data-value="female" data-text="Female">
-							<i class="female icon"></i>
-							Female
-						</div>
-					</div>
-				</div>
+				<dropdown 
+					:default-value="settings.php"
+					:options="['7.1', '5.6', '5.5']"
+					@input="updatePHPVersion"
+				/>
 			</div>
 
 			<div class="field">
@@ -142,6 +125,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Radio from '../components/form/Radio';
 import Checkbox from '../components/form/Checkbox';
+import Dropdown from '../components/form/Dropdown';
 import dialog from '../utilities/dialog';
 
 import fs from 'fs-extra';
@@ -149,7 +133,7 @@ import path from 'path';
 
 export default {
 	name: 'settings',
-	components: { Radio, Checkbox },
+	components: { Radio, Checkbox, Dropdown },
 
 	methods: {
 		...mapActions('settings', {

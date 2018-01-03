@@ -23,6 +23,14 @@ export default new Router({
 			}
 		},
 		{
+			path: '/commands',
+			name: 'commands',
+			component: require('@/pages/Commands').default,
+			meta: {
+				name: 'Commands'
+			}
+		},
+		{
 			path: '/intro',
 			name: 'intro',
 			component: require('@/pages/Intro').default,

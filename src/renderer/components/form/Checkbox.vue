@@ -9,6 +9,7 @@
 
 <script>
 export default {
+	name: 'checkbox',
 	props: {
 		label: {
 			type: String,
